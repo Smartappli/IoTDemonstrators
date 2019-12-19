@@ -1,0 +1,111 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+discovery:
+
+# Text to speech
+tts:
+  - platform: google_translate
+  
+sensor:
+  - platform: worldclock
+    time_zone: America/New_York
+
+  - platform: coinmarketcap    
+  
+  - platform: nmbs
+    station_from: "Charleroi-Sud"
+    station_to: "Mons"
+    name: "Charleroi->Mons"
+    exclude_vias: true
+    
+  - platform: nmbs
+    station_from: "Mons"
+    station_to: "Charleroi-Sud"
+    name: "Mons->Charleroi"
+    exclude_vias: true    
+    
+  - platform: nmbs
+    station_from: "Mons"
+    station_to: "Gembloux"
+    name: "Mons->Gembloux"
+    exclude_vias: false
+    
+  - platform: nmbs
+    station_from: "Gembloux"
+    station_to: "Mons"
+    name: "Gembloux->Mons"
+    exclude_vias: false   
+    
+  - platform: github
+    access_token: "a888cd01b27d7d82c3e670f76a0bc329052b65dc"
+    repositories:
+      - path: 'Smartappli/SmartCampus'    
+  
+  - platform: miflora
+    mac: 'C4:7C:8D:62:DA:C2'
+    name: Flower 1
+    force_update: true
+    median: 3
+    monitored_conditions:
+      - moisture
+      - light
+      - temperature
+      - conductivity
+      - battery 
+
+  - platform: bitcoin
+    currency: EUR
+    display_options:
+      - exchangerate
+      - trade_volume_btc
+      - btc_mined
+      
+  - platform: waqi
+    token: 174541147e75bd9fc8b8582e33c87a7625a801de
+    locations:
+      - mons   
+      
+  - platform: cpuspeed      
+  
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_free  
+  
+binary_sensor:
+  - platform: iss
+    show_on_map: false
+    
+openuv:
+  api_key: 7f8ef8081b7799aec12aa0cf1af8195b
+  binary_sensors:
+    monitored_conditions:
+      - uv_protection_window
+  sensors:
+    monitored_conditions:
+      - current_ozone_level
+      - current_uv_index
+      - current_uv_level
+      - max_uv_index
+      - safe_exposure_time_type_1
+      - safe_exposure_time_type_2
+      - safe_exposure_time_type_3
+      - safe_exposure_time_type_4
+      - safe_exposure_time_type_5
+      - safe_exposure_time_type_6
+      
+camera:
+  - platform: generic
+    name: ISS
+    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ state_attr('binary_sensor.iss', 'lat') }},{{ state_attr('binary_sensor.iss', 'long') }}&zoom=4&size=865x512&maptype=mapnik&markers={{ state_attr('binary_sensor.iss', 'lat') }},{{ state_attr('binary_sensor.iss', 'long') }},lightblue
+    limit_refetch_to_url_change: true
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

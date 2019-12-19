@@ -1,0 +1,122 @@
+  default_view:
+    view: yes
+    name: Home
+    icon: mdi:home-assistant
+    entities: 
+      - sun.sun    
+      - group.Main_World_time
+      - group.Main_SNCB
+      - group.Crypto
+      - camera.iss
+      - sensor.smartcampus
+  
+  Main_World_time:
+    control: hidden
+    name: World Time
+    view: false
+    entities: 
+      - sensor.worldclock_sensor
+      
+  Main_SNCB:
+    control: hidden
+    name: SNCB
+    view: false
+    entities:
+      - sensor.charleroi_mons
+      - sensor.mons_charleroi
+      - sensor.mons_gembloux
+      - sensor.gembloux_mons      
+
+  Crypto:
+    control: hidden
+    name: Crypto Money
+    view: false
+    entities:
+      - sensor.bitcoin
+      - sensor.mined
+      - sensor.exchange_rate_1_btc
+      - sensor.trade_volume
+
+  Main_Weather:
+    control: hidden
+    name: Meteo
+    view: true
+    entities:
+      - weather.maison
+      - group.UV
+      - group.Air_Quality
+      
+  UV:
+    control: hidden
+    name: UV
+    view: false
+    entities:
+      - sensor.skin_type_1_safe_exposure_time
+      - sensor.skin_type_2_safe_exposure_time
+      - sensor.skin_type_3_safe_exposure_time
+      - sensor.skin_type_4_safe_exposure_time
+      - sensor.skin_type_5_safe_exposure_time
+      - sensor.skin_type_6_safe_exposure_time
+  
+  Air_Quality:
+    control: hidden
+    name: Air Quality
+    view: false
+    entities:
+      - sensor.waqi_mons_belgium
+      - sensor.current_ozone_level
+      - sensor.current_uv_index
+      - sensor.current_uv_level
+      - sensor.max_uv_index  
+      
+  Main_Plant:
+    control: hidden
+    name: Plante
+    view: true
+    entities:
+      - group.Plante
+
+  Plante:
+    control: hidden
+    name: Plante
+    view: false
+    entities:
+      - sensor.flower_1_temperature
+      - sensor.flower_1_moisture
+      - sensor.flower_1_conductivity
+      - sensor.flower_1_light_intensity
+      - sensor.flower_1_battery
+      
+  Main_System:
+    control: hidden
+    name: System
+    view: true
+    entities:
+      - group.Archer_C50
+      - group.Rpi
+      
+  Archer_C50:
+    control: hidden
+    name: Internet
+    view: false
+    entities:
+      - sensor.archer_c50_bytes_received
+      - sensor.archer_c50_bytes_sent
+      - sensor.archer_c50_kbyte_sec_received
+      - sensor.archer_c50_kbyte_sec_sent
+      - sensor.archer_c50_packets_received
+      - sensor.archer_c50_packets_sec_received
+      - sensor.archer_c50_packets_sec_sent
+      - sensor.archer_c50_packets_sent
+ 
+  Rpi:
+    control: hidden
+    name: Raspi 
+    view: false
+    entities:
+      - sensor.cpu_speed
+      - sensor.memory_free
+      - sensor.disk_use_percent_home
+      
+
+    
