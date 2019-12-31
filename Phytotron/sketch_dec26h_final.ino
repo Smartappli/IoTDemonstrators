@@ -390,8 +390,6 @@ void loop(){
   lcd.setCursor(0, 0);
   lcd.print("Phytotron de Rachida");
   
-  TempAndHumidity lastValues = dht.getTempAndHumidity();
-  
   value = analogRead(sensorPin);
   //value = map(value,550,0,0,100);
   lcd.setCursor(0,1);
@@ -399,38 +397,7 @@ void loop(){
   lcd.setCursor(0,1);
   lcd.print("Moisture: ");
   lcd.print(value);
-  manualPumping();
-  manualFan();
-  delay(2000);
-  lcd.setCursor(0,1);
-  lcd.print("                   ");
-  lcd.setCursor(0,1);
-  lcd.print("Temperature: ");
-  lcd.print(String(lastValues.temperature,1));
-  lcd.print(" C");
-  manualPumping();
-  manualFan();
-  delay(2000);
-  lcd.setCursor(0,1);
-  lcd.print("                   "); 
-  lcd.setCursor(0,1);
-  lcd.print("Humidity: ");
-  lcd.print(String(lastValues.humidity,1));
-  lcd.print(" %");
-  lcd.setCursor(0,3);
-  manualPumping();
-  manualFan();
-  delay(2000);
-  lcd.print("Pump:OFF");
-  snprintf(buffer, 64, "%s", "OFF");
-  client.publish((baseTopic + "pump").c_str(), buffer); 
-  lcd.setCursor(10,3);
-  lcd.print("Fan:OFF");
-  snprintf(buffer, 64, "%s", "OFF");
-  client.publish((baseTopic + "pump").c_str(), buffer); 
-  manualPumping();
-  manualFan();
-  
+
   if (value <= moisture_trigger) { 
     digitalWrite(pumpRelay, LOW);
     lcd.setCursor(0,3);
@@ -446,7 +413,45 @@ void loop(){
     snprintf(buffer, 64, "%s", "OFF");
     client.publish((baseTopic + "pump").c_str(), buffer); 
   }
+  
+  manualPumping();
+  manualFan();
+  
+  delay(2000);
 
+  TempAndHumidity lastValues = dht.getTempAndHumidity();
+  lcd.setCursor(0,1);
+  lcd.print("                   ");
+  lcd.setCursor(0,1);
+  lcd.print("Temperature: ");
+  lcd.print(String(lastValues.temperature,1));
+  lcd.print(" C");
+  
+  manualPumping();
+  manualFan();
+  
+  delay(2000);
+  
+  lcd.setCursor(0,1);
+  lcd.print("                   "); 
+  lcd.setCursor(0,1);
+  lcd.print("Humidity: ");
+  lcd.print(String(lastValues.humidity,1));
+  lcd.print(" %");
+  lcd.setCursor(0,3);
+  lcd.print("Pump:OFF");
+  snprintf(buffer, 64, "%s", "OFF");
+  client.publish((baseTopic + "pump").c_str(), buffer); 
+  lcd.setCursor(10,3);
+  lcd.print("Fan:OFF");
+  snprintf(buffer, 64, "%s", "OFF");
+  client.publish((baseTopic + "pump").c_str(), buffer); 
+  
+  manualPumping();
+  manualFan();
+
+  delay(2000);
+  
   if (lastValues.temperature >= temperature_trigger || lastValues.humidity >= humidity_trigger) {
     digitalWrite(fanRelay, LOW);
     lcd.setCursor(10,3);
